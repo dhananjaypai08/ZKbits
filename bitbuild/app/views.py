@@ -9,7 +9,7 @@ API_URL = "http://127.0.0.1:8000/api-auth/"
 def startup(request):
     if request.session.get("admin_id"): return redirect(adminhome)
     if request.session.get("user_id"): return redirect(home)
-    return render(request, 'startup.html')
+    return render(request, 'index.html')
 
 def login(request):
     if not request.session.get("user_id"):
@@ -22,11 +22,11 @@ def login(request):
                     request.session['user_id'] = user.id
                     return redirect(home)
             msg["registered"] = 0
-        return render(request, "login.html", msg)
+        return render(request, "bothlogin.html", msg)
     return redirect(home)
 
 def register(request):
-    if not request.sesson.get("user_id"):
+    if not request.session.get("user_id"):
         msg = {}
         if request.method == "POST":
             registered = 0
@@ -38,7 +38,7 @@ def register(request):
             except:
                 registered = 2
             msg["registered"] = registered
-        return render(request, 'register.html', msg)
+        return render(request, 'reg.html', msg)
     return redirect(home)
 
 def adminlogin(request):
@@ -46,6 +46,7 @@ def adminlogin(request):
     if request.session.get("admin_id"): return redirect(adminhome)
     if request.method == "POST":
         email, password = request.POST.get("email"), request.POST.get("password")
+        print(email, password)
         admins = Admin.objects.filter(email=email)
         for admin in admins:
             if admin.password == password:
@@ -53,7 +54,7 @@ def adminlogin(request):
                 msg["username"] = admin.username
                 return redirect(adminhome)
         msg["registered"] = 0
-    return render(request, "adminlogin.html", msg)
+    return render(request, "bothlogin.html", msg)
 
 def adminhome(request):
     msg = {}
