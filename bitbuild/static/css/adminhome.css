@@ -1,0 +1,92 @@
+body{
+    background:url("/static/images/bg2.jpg") no-repeat center fixed; 
+   
+     -webkit-background-size: cover;
+    -moz-background-size: cover;
+     -o-background-size: cover;
+    background-size: cover; 
+
+}
+
+.card{
+    margin: 10rem;
+    margin-left: 30rem;
+    
+}
+
+.card_body{
+    background-color: rgba(0,0,0,0.5);
+}
+/* sidebar */
+
+#sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem; 
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 55%), 0 2px 10px 0 rgb(0 0 0 / 55%);
+    width: 160px;
+    z-index: 600;
+    padding: 15px;
+    background-color: rgb(50, 158, 226);
+    
+  }
+  
+  .sidebar .active {
+    border-radius: 5px;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+  }
+  
+  #sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 48px);
+    padding-top: 0.5rem;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    
+  }
+  
+  li{
+     list-style-type: none;
+     padding-top: 5rem;
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     align-items: center;
+     
+  }
+  
+  li:hover{
+      transform: scale(1.2);
+  
+  }
+  
+  .widgets {
+      text-decoration: none;
+      font-family: "fantasy";
+      color: rgb(152, 44, 44);
+      font-family: fantasy;
+      font-size: 20px;
+      font-weight: lighter;
+     
+  }
+  
+  img{
+      width: 40px;
+      height: 40px;
+  }
+  
+  a{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+  
+  }
+  
+  .text{
+      margin-left: .5rem;
+  }
+  
