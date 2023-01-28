@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin-Add</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="container">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">ZKBuilders</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="linkedin.com/in/dhananjay-pai">Connect</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class="container">
+        <ul class="list-group">
+            <li class="list-group-item"><a href="/adminhome" class="link-info">Back</a></li>
+        </ul>
+    </div>
+    <br>
+    <div class="container">
+        {% if added == 1 %}
+        <div class="alert alert-success" role="alert">
+            Product has been Added
+          </div>
+        {% elif added == 2 %}
+        <div class="alert alert-danger" role="alert">
+            Something went wrong Product not Added
+          </div>
+        {% endif %}
+        
+        <form action="/adminadd/" method="POST">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Name</span>
+                <input name="name" type="text" class="form-control" placeholder="Name of Product" aria-label="Product Name" aria-describedby="basic-addon1" required>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Amount per Kg/L</span>
+                <input name="amount" type="text" class="form-control" placeholder="Amount of Product per Kg/L" aria-label="Product Amount" aria-describedby="basic-addon1" required>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Quantity</span>
+                <input name="quantity" type="text" class="form-control" placeholder="Quantity of Product" aria-label="Product Quantity" aria-describedby="basic-addon1" required>
+            </div>
+
+            <div class="input-group mb-3">
+                <select class="form-select" id="inputGroupSelect02" name="category">
+                  <option selected>Choose...</option>
+                  <option value="Mushrooms">Mushrooms</option>
+                  <option value="Turtles">Turtles</option>
+                  <option value="Mario Kart">Mario Kart</option>
+                  <option value="Nintendo">Nintendo</option>
+                  <option value="Costumes">Costumes</option>
+                </select>
+                <label class="input-group-text" for="inputGroupSelect02">Category</label>
+              </div>
+
+              <div class="input-group mb-3">
+                <select class="form-select" id="inputGroupSelect02" name="mode">
+                  <option selected>Choose...</option>
+                  <option value="Import">Import</option>
+                  <option value="Export">Export</option>
+                </select>
+                <label class="input-group-text" for="inputGroupSelect02">Mode</label>
+              </div>
+              
+            <div class="input-group mb-3">
+                <span class="input-group-text">Description</span>
+                <input name="description" type="text" class="form-control" placeholder="Description" aria-label="Description" required>
+            </div>
+              
+            <button type="submit" class="btn btn-outline-success">Add</button>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  </body>
+</html>

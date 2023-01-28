@@ -1,0 +1,72 @@
+body{
+    background:url("./images/pipes_ingame.png") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#nav-bar{
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#logo{
+    height: 100px;
+    width:100px;
+    margin: 0px;
+}
+
+#buttons-first{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+}
+.button{
+    background-color: transparent;
+    border: 0px;
+    margin: 10px;
+    padding: 10px;
+    font-family:fantasy;
+    font-weight:lighter;
+    font-size: x-large;
+    color: antiquewhite;
+    cursor:grab;
+    
+ 
+}
+
+.button:hover{
+    color: brown;
+    transform: scale(1.2);
+}
+
+.select-icon{
+    height: 50px;
+    width: 50px;
+}
+
+a:link{
+    text-decoration: none;
+    color: white;
+}
+
+a:visited {
+    color: white;
+    
+}
+
+a:hover {
+    color: brown;
+    
+}
+
+a:active {
+    color:white;
+}
