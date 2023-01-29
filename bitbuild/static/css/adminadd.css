@@ -1,0 +1,41 @@
+body {
+  background: url("/static/images/bg2.jpg") no-repeat center fixed;
+
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+  font-family: fantasy;
+}
+
+nav {
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.nav_opt {
+  font-family: fantasy;
+}
+
+span:hover {
+  color: rgb(183, 43, 25);
+}
+
+.btns {
+  background-color: white;
+  color: green;
+  border: none;
+  border-radius: 0.5rem;
+  width: 5rem;
+  height: 2rem;
+  font-family: fantasy;
+}
+
+
+.btns:hover {
+  background-color: green;
+  color: white;
+}

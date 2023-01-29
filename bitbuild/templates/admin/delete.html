@@ -3,35 +3,49 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/adminadd.css' %}">
     <title>Admin-Delete</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   </head>
   <body>
     <div class="container">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/">ZKBuilders</a>
+      <nav class="navbar navbar-expand-lg active " >
+        <div class="container-fluid" style="background-color:rgb(237, 199, 153);">
+          
+          {% load static %}
+          <a class="navbar-brand" href="/"><img src="{% static 'images/sszklogo.png' %}" style="width: 150px;"></a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
+                <a class="nav-link active" aria-current="page" href="/adminview/" ><span class="nav_opt">VIEW</span></a>
               </li>
+
               <li class="nav-item">
-                <a class="nav-link active" href="linkedin.com/in/dhananjay-pai">Connect</a>
+                <a class="nav-link active" aria-current="page" href="/adminadd/" ><span class="nav_opt">ADD</span></a>
               </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/adminupdate/" ><span class="nav_opt">UPDATE</span></a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/admindelete/" ><span class="nav_opt">DELETE</span></a>
+              </li>
+          
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/logout/" ><span class="nav_opt">LOGOUT</span></a>
+              </li>
+             
             </ul>
           </div>
         </div>
       </nav>
     </div>
-    <div class="container">
-          <ul class="list-group">
-            <li class="list-group-item"><a href="/adminhome/" class="link-info">Back</a></li>
-          </ul>
-    </div>
+    
     <div class="container">
         {% if deleted == 1 %}
         <div class="alert alert-success" role="alert">
@@ -40,15 +54,15 @@
         {% endif %}
         <form action="/admindelete/" method="POST">
             {% csrf_token %}
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 mt-3">
                 <span class="input-group-text" id="basic-addon1">Id</span>
                 <input name="id" type="text" class="form-control" placeholder="Id of the Product to be Deleted" aria-label="Product Id" aria-describedby="basic-addon1" required>
             </div>
         
-            <button type="submit" class="btn btn-outline-success">Delete</button>
+            <button type="submit" class="btns">Delete</button>
         </form>
 
-        <table class="table">
+        <table class="table mt-2" style="font-family: fantasy; text-align: center;">
             <thead>
               <tr>
                 <th scope="col">Id</th>

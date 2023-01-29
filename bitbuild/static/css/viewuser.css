@@ -1,0 +1,20 @@
+body{
+    background-color:#6096ff;
+   
+     -webkit-background-size: cover;
+    -moz-background-size: cover;
+     -o-background-size: cover;
+    background-size: cover; 
+    z-index: 0;
+    } 
+
+
+.footer{
+    position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 12rem;
+  z-index: -1;
+  
+}
