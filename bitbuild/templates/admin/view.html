@@ -40,6 +40,14 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/logout/" ><span class="nav_opt">LOGOUT</span></a>
               </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/static/reports.csv" download="Reports.csv"><span class="nav_opt">DOWNLOAD REPORT</span></a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/mail/"><span class="nav_opt">MAIL REPORT</span></a>
+              </li>
              
             </ul>
           </div>
@@ -61,6 +69,8 @@
                 <th scope="col">Total Amount</th>
                 <th scope="col">Description</th>
                 <th scope="col">Time</th>
+                <th scope="col">% Imported</th>
+                <th scope="col">% Exported</th>
               </tr>
             </thead>
             {% for product in data %}
@@ -75,6 +85,8 @@
                 <td>{{product.totalamount}}</td>
                 <td>{{product.description}}</td>
                 <td>{{product.time}}</td>
+                <td>{{product.imported}}</td>
+                <td>{{product.exported}}</td>
               </tr>
             </tbody>
             {% endfor %}

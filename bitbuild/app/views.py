@@ -3,6 +3,11 @@ from .models import Admin, User
 from api.models import Product
 from api.serializers import ProductSerializer
 import requests
+import csv
+from decouple import config
+import smtplib, ssl
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 API_URL = "http://127.0.0.1:8000/api-auth/"
 
@@ -84,8 +89,21 @@ def adminview(request):
     if request.session.get("admin_id"):
         msg = {}
         URL = API_URL+"view/"
+        imported, exported = analyze()
+        totalimp, totalexp = sum(list(imported.values())), sum(list(exported.values()))
         data = requests.get(URL).json()
+        for product in data:
+            if totalimp>0 and product["mode"] == "Import":
+                product["imported"] = (product["totalamount"]/totalimp)*100
+            else:
+                product["imported"] = "-"
+            if totalexp>0 and product["mode"] == "Export":
+                product["exported"] = (product["totalamount"]/totalexp)*100
+            else:
+                product["exported"] = "-"
+        writecsv()
         msg["data"] = data 
+        
         return render(request, "admin/view.html", msg)
     return redirect(adminlogin)
 
@@ -167,3 +185,86 @@ def userview(request):
         msg["data"] = data
         return render(request, "user/view.html", msg)
     return redirect(login)
+
+def analyze():
+    products = Product.objects.all()
+    imported = {}
+    exported = {}
+    for product in products:
+        if product.mode == "Import":
+            imported[product.category] = imported.get(product.category, 0) + product.totalamount
+        else:
+            exported[product.category] = exported.get(product.category, 0) + product.totalamount
+    return imported, exported
+
+def writecsv():
+    fields = ["Id", "Name", "Amount per Kg/L", "Quantity", "Category", "Mode", "Total Amount", "Description", "Time", "percentage Imported", "percentage Exported"]
+    rows = []
+    imported, exported = analyze()
+    
+    totalimp, totalexp = sum(list(imported.values())), sum(list(exported.values()))
+    URL = API_URL+"view/"
+    products = requests.get(URL).json()
+    
+    for product in products:
+        if totalimp>0:
+            product["imported"] = (product["totalamount"]/totalimp)*100
+        else:
+            product["imported"] = "-"
+        if totalexp>0:
+            product["exported"] = (product["totalamount"]/totalexp)*100
+        else:
+            product["exported"] = "-"
+    
+    for product in products:
+        lst = [product["id"], product["name"], product["amount"], product["quantity"], product["category"], product["mode"], product["totalamount"], product["description"], product["time"], product["imported"], product["exported"]]
+        rows.append(lst)
+    filename = "C:/Users/dhana/coding/Personal Projects/BitBuild/bitbuild/static/reports.csv"
+    with open(filename, 'w') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        csvwriter.writerow(fields)
+        csvwriter.writerows(rows)
+        
+class Mail:
+    def __init__(self) -> None:
+        self.email = 'dhananjay2002pai@gmail.com'
+        self.password = config("PASSWORD")
+        
+    def sendto(self, receiver, name):
+        port = 465
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+            server.login(self.email, self.password)
+            msg = MIMEMultipart('alternative')
+            subject = "Reports Generated for your Warehouse"
+            msg['Subject'] = subject
+            msg['From'] = self.email
+            msg['To'] = receiver
+            
+            html = f"""
+            <html>
+            <head></head>
+            <body>
+                <h2>Hi <strong>{name}</strong>!<h2>
+                <p>Here are your reports</p>
+                <a href="http://127.0.0.1:8000/static/reports.csv download="reports.csv">Download</a>
+                Regards,
+                ZKBuilders
+            </body>
+            </html>
+            """
+            part1 = MIMEText(html, 'html')
+            msg.attach(part1)
+            
+            server.sendmail(self.email, receiver, msg.as_string())
+            print(msg.as_string())
+            
+        
+def mail(request):
+    if request.session.get("admin_id"):
+        admin = Admin.objects.get(id=request.session["admin_id"])
+        mail = Mail()
+        mail.sendto(admin.email, admin.username)
+        return redirect(adminview)
+    return redirect(adminlogin)
+        

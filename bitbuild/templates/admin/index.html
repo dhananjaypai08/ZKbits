@@ -29,13 +29,57 @@
     </div>
 </div> -->
 
-<div class="container">
-  <div class="card" style="width: 18rem;">
-      <div class="card-body">
+{% comment %} <div class="container">
+  <div class="card" style="width: 18rem;"> {% endcomment %}
+    {% comment %} <img src="https://www.clipartkey.com/mpngs/m/20-200711_mario-clipart-jumping-super-mario-png.png" class="card-img-top" alt="..."> {% endcomment %}
+      {% comment %} <div class="card-body">
         <h5 class="card-title">Welcome! {{username}}</h5>
         <p class="card-text">Track, Manage and Generate reports for your inventory</p>
         <a href="/logout/" class="btn btn-primary">Logout</a>
+      </div> {% endcomment %}
+
+      <div class="container-head">
+        <h5 class="c-head">Welcome! {{username}}</h5>
+        <p class="c-text">Track, Manage and Generate reports for your inventory</p>
+        <a href="/logout/" class="btn btn-primary">Logout</a>
       </div>
+
+      {% comment %} <div class="container">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Amount per Kg/L</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Category</th>
+                <th scope="col">Mode</th>
+                <th scope="col">Total Amount</th>
+                <th scope="col">Description</th>
+                <th scope="col">Time</th>
+                <th scope="col">% Imported</th>
+                <th scope="col">% Exported</th>
+              </tr>
+            </thead>
+            {% for product in data %}
+            <tbody>
+              <tr>
+                <th scope="row">{{product.id}}</th>
+                <td>{{product.name}}</td>
+                <td>{{product.amount}}</td>
+                <td>{{product.quantity}}</td>
+                <td>{{product.category}}</td>
+                <td>{{product.mode}}</td>
+                <td>{{product.totalamount}}</td>
+                <td>{{product.description}}</td>
+                <td>{{product.time}}</td>
+                <td>{{product.imported}}</td>
+                <td>{{product.exported}}</td>
+              </tr>
+            </tbody>
+            {% endfor %}
+          </table>
+    </div> {% endcomment %}
 
       <nav id="sidebar" class="active">
         

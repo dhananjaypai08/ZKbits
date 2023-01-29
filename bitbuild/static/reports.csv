@@ -1,0 +1,3 @@
+Id,Name,Amount per Kg/L,Quantity,Category,Mode,Total Amount,Description,Time,percentage Imported,percentage Exported
+1,Mushroom,2,10,Mushrooms,Import,20,Sweet Mushrooms 20kg,2023-01-29T03:08:58.281735Z,100.0,40.0
+2,Tshirts,10,5,Costumes,Export,50,Red Tshirt for Mario,2023-01-29T03:09:42.274120Z,250.0,100.0
