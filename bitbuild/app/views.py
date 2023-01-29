@@ -5,7 +5,9 @@ from api.serializers import ProductSerializer
 import requests
 import csv
 from decouple import config
-import smtplib
+import smtplib, ssl
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 API_URL = "http://127.0.0.1:8000/api-auth/"
 
@@ -91,11 +93,11 @@ def adminview(request):
         totalimp, totalexp = sum(list(imported.values())), sum(list(exported.values()))
         data = requests.get(URL).json()
         for product in data:
-            if totalimp>0:
+            if totalimp>0 and product["mode"] == "Import":
                 product["imported"] = (product["totalamount"]/totalimp)*100
             else:
                 product["imported"] = "-"
-            if totalexp>0:
+            if totalexp>0 and product["mode"] == "Export":
                 product["exported"] = (product["totalamount"]/totalexp)*100
             else:
                 product["exported"] = "-"
@@ -199,10 +201,11 @@ def writecsv():
     fields = ["Id", "Name", "Amount per Kg/L", "Quantity", "Category", "Mode", "Total Amount", "Description", "Time", "percentage Imported", "percentage Exported"]
     rows = []
     imported, exported = analyze()
+    
     totalimp, totalexp = sum(list(imported.values())), sum(list(exported.values()))
     URL = API_URL+"view/"
     products = requests.get(URL).json()
-    print(products)
+    
     for product in products:
         if totalimp>0:
             product["imported"] = (product["totalamount"]/totalimp)*100
@@ -212,7 +215,7 @@ def writecsv():
             product["exported"] = (product["totalamount"]/totalexp)*100
         else:
             product["exported"] = "-"
-    print(products)
+    
     for product in products:
         lst = [product["id"], product["name"], product["amount"], product["quantity"], product["category"], product["mode"], product["totalamount"], product["description"], product["time"], product["imported"], product["exported"]]
         rows.append(lst)
@@ -228,25 +231,40 @@ class Mail:
         self.password = config("PASSWORD")
         
     def sendto(self, receiver, name):
-        with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
-            smtp.ehlo()
-            smtp.starttls()
-            smtp.ehlo()
-            
-            smtp.login(self.email, self.password)
-            
+        port = 465
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+            server.login(self.email, self.password)
+            msg = MIMEMultipart('alternative')
             subject = "Reports Generated for your Warehouse"
-            body = f"Hi {name}!\nHere are your reports\n<a href='http://127.0.0.1:8000/static/reports.csv'>Download</a>\n\nRegards, \n ZKBuilders"
-            msg = f"Subject:{subject}\n\n{body}"
+            msg['Subject'] = subject
+            msg['From'] = self.email
+            msg['To'] = receiver
             
-            smtp.sendmail(self.email, receiver, msg)
+            html = f"""
+            <html>
+            <head></head>
+            <body>
+                <h2>Hi <strong>{name}</strong>!<h2>
+                <p>Here are your reports</p>
+                <a href="http://127.0.0.1:8000/static/reports.csv download="reports.csv">Download</a>
+                Regards,
+                ZKBuilders
+            </body>
+            </html>
+            """
+            part1 = MIMEText(html, 'html')
+            msg.attach(part1)
             
+            server.sendmail(self.email, receiver, msg.as_string())
+            print(msg.as_string())
+            
+        
 def mail(request):
     if request.session.get("admin_id"):
         admin = Admin.objects.get(id=request.session["admin_id"])
         mail = Mail()
         mail.sendto(admin.email, admin.username)
-        print("sent")
         return redirect(adminview)
     return redirect(adminlogin)
         

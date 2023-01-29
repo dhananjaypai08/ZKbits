@@ -7,17 +7,36 @@ body{
     background-size: cover; 
 
 }
+.container{
+    margin-top: 25px;
+    z-index: 2;
+}
 
-.card{
-    margin: 10rem;
-    margin-left: 30rem;
+.table{
+    font-family: fantasy;
+    font-size: 15px;
     
+    text-align: center;
 }
 
-.card_body{
-    background-color: rgba(0,0,0,0.5);
+th{
+    font-size: 1.3rem;
 }
-/* sidebar */
+td{
+    font-size: .9rem;
+}
+
+
+.container-head{
+    font-family: fantasy;
+    font-size: 40px;
+    color: rgb(108, 232, 55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 
 #sidebar {
     position: fixed;
