@@ -4,30 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin-Home</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/adminhome.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   </head>
   <body>
-    <div class="container">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/">ZKBuilders</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="linkedin.com/in/dhananjay-pai">Connect</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </div>
-    <div class="container">
+    
+    <!-- <div class="container">
         <div class="card" style="width: 18rem;">
             <div class="card-body">
               <h5 class="card-title">Welcome! {{username}}</h5>
@@ -44,8 +27,40 @@
           </ul>
         </div>
     </div>
-</div>
+</div> -->
 
+<div class="container">
+  <div class="card" style="width: 18rem;">
+    <img src="https://www.clipartkey.com/mpngs/m/20-200711_mario-clipart-jumping-super-mario-png.png" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Welcome! {{username}}</h5>
+        <p class="card-text">Track, Manage and Generate reports for your inventory</p>
+        <a href="/logout/" class="btn btn-primary">Logout</a>
+      </div>
+
+      <nav id="sidebar" class="active">
+        
+        <ul class="list-unstyled components mb-5">
+        <li class="active">
+          {% load static %}
+        <a href="/adminview/" class="widgets"><span class="fa fa-home"><img src="{% static 'images/select-icon-removebg-preview.png' %}"/></span> <span class="text">VIEW</span></a>
+        </li>
+        <li>
+          {% load static %}
+        <a href="/adminadd/" class="widgets"><span class="fa fa-user"><img src="{% static 'images/select-icon-removebg-preview.png' %}"/></span> <span class="text">ADD</span></a>
+        </li>
+        <li>
+          {% load static %}
+        <a href="/adminupdate/" class="widgets"><span class="fa fa-sticky-note"><img src="{% static 'images/select-icon-removebg-preview.png' %}"/></span> <span class="text">UPDATE</span></a>
+        </li>
+        <li>
+          {% load static %}
+        <a href="/admindelete/" class="widgets"><span class="fa fa-cogs"><img src="{% static 'images/select-icon-removebg-preview.png' %}"/></span> <span class="text">DELETE</span></a>
+        </li>
+        
+        </ul>
+        
+        </nav>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
   </body>
 </html>

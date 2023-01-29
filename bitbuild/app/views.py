@@ -3,6 +3,9 @@ from .models import Admin, User
 from api.models import Product
 from api.serializers import ProductSerializer
 import requests
+import csv
+from decouple import config
+import smtplib
 
 API_URL = "http://127.0.0.1:8000/api-auth/"
 
@@ -84,8 +87,21 @@ def adminview(request):
     if request.session.get("admin_id"):
         msg = {}
         URL = API_URL+"view/"
+        imported, exported = analyze()
+        totalimp, totalexp = sum(list(imported.values())), sum(list(exported.values()))
         data = requests.get(URL).json()
+        for product in data:
+            if totalimp>0:
+                product["imported"] = (product["totalamount"]/totalimp)*100
+            else:
+                product["imported"] = "-"
+            if totalexp>0:
+                product["exported"] = (product["totalamount"]/totalexp)*100
+            else:
+                product["exported"] = "-"
+        writecsv()
         msg["data"] = data 
+        
         return render(request, "admin/view.html", msg)
     return redirect(adminlogin)
 
@@ -167,3 +183,70 @@ def userview(request):
         msg["data"] = data
         return render(request, "user/view.html", msg)
     return redirect(login)
+
+def analyze():
+    products = Product.objects.all()
+    imported = {}
+    exported = {}
+    for product in products:
+        if product.mode == "Import":
+            imported[product.category] = imported.get(product.category, 0) + product.totalamount
+        else:
+            exported[product.category] = exported.get(product.category, 0) + product.totalamount
+    return imported, exported
+
+def writecsv():
+    fields = ["Id", "Name", "Amount per Kg/L", "Quantity", "Category", "Mode", "Total Amount", "Description", "Time", "percentage Imported", "percentage Exported"]
+    rows = []
+    imported, exported = analyze()
+    totalimp, totalexp = sum(list(imported.values())), sum(list(exported.values()))
+    URL = API_URL+"view/"
+    products = requests.get(URL).json()
+    print(products)
+    for product in products:
+        if totalimp>0:
+            product["imported"] = (product["totalamount"]/totalimp)*100
+        else:
+            product["imported"] = "-"
+        if totalexp>0:
+            product["exported"] = (product["totalamount"]/totalexp)*100
+        else:
+            product["exported"] = "-"
+    print(products)
+    for product in products:
+        lst = [product["id"], product["name"], product["amount"], product["quantity"], product["category"], product["mode"], product["totalamount"], product["description"], product["time"], product["imported"], product["exported"]]
+        rows.append(lst)
+    filename = "C:/Users/dhana/coding/Personal Projects/BitBuild/bitbuild/static/reports.csv"
+    with open(filename, 'w') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        csvwriter.writerow(fields)
+        csvwriter.writerows(rows)
+        
+class Mail:
+    def __init__(self) -> None:
+        self.email = 'dhananjay2002pai@gmail.com'
+        self.password = config("PASSWORD")
+        
+    def sendto(self, receiver, name):
+        with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+            smtp.ehlo()
+            smtp.starttls()
+            smtp.ehlo()
+            
+            smtp.login(self.email, self.password)
+            
+            subject = "Reports Generated for your Warehouse"
+            body = f"Hi {name}!\nHere are your reports\n<a href='http://127.0.0.1:8000/static/reports.csv'>Download</a>\n\nRegards, \n ZKBuilders"
+            msg = f"Subject:{subject}\n\n{body}"
+            
+            smtp.sendmail(self.email, receiver, msg)
+            
+def mail(request):
+    if request.session.get("admin_id"):
+        admin = Admin.objects.get(id=request.session["admin_id"])
+        mail = Mail()
+        mail.sendto(admin.email, admin.username)
+        print("sent")
+        return redirect(adminview)
+    return redirect(adminlogin)
+        
